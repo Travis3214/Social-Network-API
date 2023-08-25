@@ -1,6 +1,36 @@
 // Requires mongoose to build the models
 const { Schema, model, Types } = require('mongoose');
 
+// This builds our reaction schema
+const reactionSchema = new Schema (
+  {
+     reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+     },
+     reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280
+     },
+     username: {
+      type: String,
+      required: true,
+     },
+     createdAt: {
+      type: Date,
+      default: Date.now,
+     },
+  },
+  {
+      toJSON: {
+          virtuals: true,
+          getters: true
+      },
+      id: false,
+  }
+)
+
 // This builds our thought model
 const thoughtSchema = new Schema (
     {
@@ -28,36 +58,6 @@ const thoughtSchema = new Schema (
         id: false,
     }
 )
-
-// This builds our reaction schema
-const reactionSchema = new Schema (
-    {
-       reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId(),
-       },
-       reactionBody: {
-        type: String,
-        required: true,
-        maxlength: 280
-       },
-       username: {
-        type: String,
-        required: true,
-       },
-       createdAt: {
-        type: Date,
-        default: Date.now,
-       },
-    },
-    {
-        toJSON: {
-            virtuals: true,
-            getters: true
-        },
-        id: false,
-    }
-  )
 
   // This retrieves the length of the thought's reactions array field on query
 thoughtSchema.virtual('reactionCount')
